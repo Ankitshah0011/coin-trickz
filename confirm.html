@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Confirm Payment — TRICKS ZONE</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+
+  <!-- Main Site CSS -->
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    /* ✅ responsive fix for detail grid */
+    @media (max-width: 650px){
+      .tz-details-grid{
+        grid-template-columns: 1fr !important;
+      }
+    }
+
+    /* ✅ sticky bottom bar for easy WhatsApp send */
+    .tz-sticky-wa{
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 9999;
+      padding: 12px;
+      background: rgba(0,0,0,.45);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-top: 1px solid rgba(255,255,255,.10);
+    }
+    .tz-sticky-wa .wrap{
+      width: min(760px, 92vw);
+      margin: 0 auto;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    .tz-sticky-wa .wrap .btn{
+      flex: 1;
+    }
+
+    /* So page content doesn't hide behind sticky bar */
+    body{
+      padding-bottom: 90px;
+    }
+
+    /* Copy button style matches outline button */
+    .tz-copy-btn{
+      white-space: nowrap;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Same Background -->
+  <div class="tz-bg">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+    <div class="grain"></div>
+  </div>
+
+  <section class="tz-section">
+    <div class="container tz-center">
+
+      <div class="glass" style="width:min(760px,92vw); padding:28px; border-radius:26px;">
+
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
+          <div>
+            <span class="tz-kicker">PAYMENT CONFIRM</span>
+            <h2 class="tz-h2 mt-2 mb-1" id="pageTitle">Confirm Payment</h2>
+            <p class="tz-lead" style="margin:0; max-width:100%;">
+              Upload screenshot, then send details on WhatsApp.
+            </p>
+          </div>
+
+          <a href="index.html" class="btn tz-btn-outline tz-ripple" style="white-space:nowrap;">
+            <i class="fa-solid fa-house me-2"></i> Home
+          </a>
+        </div>
+
+        <!-- Details -->
+        <div class="glass" style="margin-top:18px; padding:18px; border-radius:22px;">
+          <h3 class="tz-h3 mb-3">Your Details</h3>
+
+          <div class="tz-details-grid" style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+            <div>
+              <label style="font-weight:700; display:block; margin-bottom:6px;">Plan</label>
+              <input id="dPlan" type="text" readonly
+                style="width:100%; padding:14px; border-radius:18px; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.16); color:white;">
+            </div>
+
+            <div>
+              <label style="font-weight:700; display:block; margin-bottom:6px;">Name</label>
+              <input id="dName" type="text" readonly
+                style="width:100%; padding:14px; border-radius:18px; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.16); color:white;">
+            </div>
+
+            <div>
+              <label style="font-weight:700; display:block; margin-bottom:6px;">Phone</label>
+              <input id="dPhone" type="text" readonly
+                style="width:100%; padding:14px; border-radius:18px; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.16); color:white;">
+            </div>
+
+            <div>
+              <label style="font-weight:700; display:block; margin-bottom:6px;">Age</label>
+              <input id="dAge" type="text" readonly
+                style="width:100%; padding:14px; border-radius:18px; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.16); color:white;">
+            </div>
+
+            <div style="grid-column: 1 / -1;">
+              <label style="font-weight:700; display:block; margin-bottom:6px;">UTR</label>
+              <input id="dUtr" type="text" readonly
+                style="width:100%; padding:14px; border-radius:18px; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.16); color:white;">
+            </div>
+          </div>
+        </div>
+
+        <!-- Upload Screenshot -->
+        <div class="glass" style="margin-top:18px; padding:18px; border-radius:22px;">
+          <h3 class="tz-h3 mb-2">Upload Payment Screenshot</h3>
+          <p class="tz-lead" style="margin:0 0 12px; max-width:100%;">
+            Upload screenshot here. When WhatsApp opens, tap <b>📎 Attach</b> and select this same screenshot.
+          </p>
+
+          <input
+            type="file"
+            id="payShot"
+            accept="image/*"
+            style="width:100%; padding:12px; border-radius:18px; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.16); color:white;"
+          />
+
+          <div id="previewWrap" style="display:none; margin-top:14px;">
+            <img id="previewImg" alt="Payment Screenshot Preview"
+              style="width:100%; border-radius:18px; border:1px solid rgba(255,255,255,.14);">
+          </div>
+
+          <small class="tz-hint" style="display:block; margin-top:10px;">
+            ⚠️ WhatsApp does not allow websites to auto-send images. You must attach it manually inside WhatsApp chat.
+          </small>
+        </div>
+
+        <!-- WhatsApp Button (main) -->
+        <div style="display:flex; gap:10px; margin-top:14px; flex-wrap:wrap;">
+          <button class="btn tz-btn tz-ripple" id="sendWaBtn" type="button" style="flex:1; min-width:220px;">
+            <i class="fa-brands fa-whatsapp me-2"></i> Send on WhatsApp
+          </button>
+
+          <button class="btn tz-btn-outline tz-ripple tz-copy-btn" id="copyMsgBtn" type="button">
+            <i class="fa-solid fa-copy me-2"></i> Copy Message
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ✅ Sticky bottom bar (easy send) -->
+  <div class="tz-sticky-wa">
+    <div class="wrap">
+      <button class="btn tz-btn tz-ripple" id="sendWaBtnSticky" type="button">
+        <i class="fa-brands fa-whatsapp me-2"></i> Send on WhatsApp
+      </button>
+    </div>
+  </div>
+
+  <script>
+  (() => {
+    const params = new URLSearchParams(window.location.search);
+
+    const plan  = params.get("plan")  || "Enrollment";
+    const name  = params.get("name")  || "";
+    const phone = params.get("phone") || "";
+    const age   = params.get("age")   || "";
+    const utr   = params.get("utr")   || "";
+
+    // Fill inputs
+    document.getElementById("dPlan").value  = plan;
+    document.getElementById("dName").value  = name;
+    document.getElementById("dPhone").value = phone;
+    document.getElementById("dAge").value   = age;
+    document.getElementById("dUtr").value   = utr;
+
+    // Title
+    const pageTitle = document.getElementById("pageTitle");
+    if (pageTitle) pageTitle.textContent = `Confirm Payment — ${plan}`;
+
+    // Screenshot preview
+    const payShot = document.getElementById("payShot");
+    const previewWrap = document.getElementById("previewWrap");
+    const previewImg = document.getElementById("previewImg");
+
+    let screenshotReady = false;
+
+    payShot.addEventListener("change", () => {
+      const file = payShot.files?.[0];
+      if (!file) {
+        screenshotReady = false;
+        previewWrap.style.display = "none";
+        previewImg.src = "";
+        return;
+      }
+      screenshotReady = true;
+      previewImg.src = URL.createObjectURL(file);
+      previewWrap.style.display = "block";
+    });
+
+    // Build WhatsApp message
+    const buildMsg = () => {
+      return `New Enrollment 🚀
+Plan: ${plan}
+Name: ${name}
+Phone: ${phone}
+Age: ${age}
+UTR: ${utr}
+Payment: Claimed (Verify UTR)
+
+📌 Screenshot: Please attach screenshot now.
+(After WhatsApp opens, tap 📎 Attach → select the uploaded screenshot)`;
+    };
+
+    // WhatsApp send (works for both buttons)
+    const sendToWhatsApp = () => {
+      if (!name || !phone || !age || !utr) {
+        alert("Missing details. Please go back and fill the form correctly.");
+        return;
+      }
+      if (!screenshotReady) {
+        alert("Please upload payment screenshot first.");
+        return;
+      }
+
+      const msg = buildMsg();
+      const ownerWhatsApp = "917744973790"; // 🔴 your WhatsApp number (no +)
+      const url = `https://wa.me/${ownerWhatsApp}?text=${encodeURIComponent(msg)}`;
+      window.open(url, "_blank");
+    };
+
+    // Buttons
+    const sendBtn = document.getElementById("sendWaBtn");
+    const sendBtnSticky = document.getElementById("sendWaBtnSticky");
+    const copyBtn = document.getElementById("copyMsgBtn");
+
+    sendBtn.addEventListener("click", sendToWhatsApp);
+    sendBtnSticky.addEventListener("click", sendToWhatsApp);
+
+    // Copy message
+    copyBtn.addEventListener("click", async () => {
+      const msg = buildMsg();
+      try{
+        await navigator.clipboard.writeText(msg);
+        alert("Message copied ✅ Now open WhatsApp and paste + attach screenshot 📎");
+      }catch{
+        alert("Copy failed. Please manually copy the text from the page.");
+      }
+    });
+  })();
+  </script>
+
+</body>
+</html>

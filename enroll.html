@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Enroll — Program</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+
+  <!-- Main Site CSS (reuse same theme) -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- Same animated background blobs -->
+  <div class="tz-bg">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+    <div class="grain"></div>
+  </div>
+
+  <section class="tz-section">
+    <div class="container tz-center">
+
+      <!-- Enrollment Card -->
+      <div class="glass tz-enroll-card" style="width:min(720px, 92vw); padding: 28px; border-radius: 26px;">
+        <h2 class="tz-h2 text-center mb-2" id="enrollTitle">Enrollment</h2>
+        <p class="tz-lead text-center mb-4">Enter your details to continue</p>
+
+        <form class="tz-enroll-form" autocomplete="on">
+
+          <label style="font-weight:700; margin-bottom:8px; display:block;">Name</label>
+          <input
+            type="text"
+            placeholder="Your Name"
+            required
+            id="tzName"
+            style="width:100%; padding:14px 16px; border-radius: 18px; background: rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.16); color: var(--text); outline:none; margin-bottom: 16px;"
+          >
+
+          <label style="font-weight:700; margin-bottom:8px; display:block;">Phone Number</label>
+          <input
+            type="tel"
+            placeholder="Your Phone Number"
+            required
+            id="tzPhone"
+            inputmode="tel"
+            style="width:100%; padding:14px 16px; border-radius: 18px; background: rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.16); color: var(--text); outline:none; margin-bottom: 16px;"
+          >
+
+          <label style="font-weight:700; margin-bottom:8px; display:block;">Age</label>
+          <input
+            type="number"
+            placeholder="Your Age"
+            required
+            id="tzAge"
+            inputmode="numeric"
+            style="width:100%; padding:14px 16px; border-radius: 18px; background: rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.16); color: var(--text); outline:none; margin-bottom: 10px;"
+          >
+
+          <!-- Click for Payment -->
+          <button
+            type="button"
+            class="btn tz-btn tz-ripple w-100 mt-3"
+            id="tzPaymentBtn">
+            💳 Click for Payment
+          </button>
+
+        </form>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- PAYMENT MODAL -->
+  <div
+    class="tz-modal"
+    id="tzPaymentModal"
+    aria-hidden="true"
+    role="dialog"
+    aria-label="Payment QR Code">
+
+    <div class="glass tz-payment-card" style="width:min(520px, 92vw); padding: 18px; border-radius: 26px; position: relative;">
+
+      <!-- Close -->
+      <button
+        class="tz-modal-close"
+        id="tzPaymentClose"
+        aria-label="Close payment popup">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <!-- Title -->
+      <h3 class="tz-h3 text-center mb-3">Scan to Pay</h3>
+
+      <!-- ✅ TOP CONTINUE BUTTON -->
+      <button
+        type="button"
+        class=""
+        id="tzContinueBtnTop">
+        
+      </button>
+
+      <!-- QR -->
+      <img
+        src="ankit.jpeg"
+        alt="Payment QR Code"
+        class="tz-payment-qr"
+        style="width:100%; max-width: 420px; display:block; margin: 0 auto; border-radius: 22px; border:1px solid rgba(255,255,255,.14);"
+      >
+
+      <!-- UTR -->
+      <label style="display:block; text-align:left; font-weight:700; margin-top:14px;">
+        UTR / Reference Number
+      </label>
+
+      <input
+        type="text"
+        id="tzUtr"
+        placeholder="Enter UTR after payment"
+        inputmode="numeric"
+        autocomplete="off"
+        minlength="10"
+        maxlength="20"
+        style="width:100%; padding:14px 16px; border-radius: 18px; background: rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.16); color: var(--text); outline:none; margin-top: 10px;"
+      >
+
+      <small class="tz-hint" style="display:block; margin-top:10px; color: rgba(234,240,255,.65); line-height: 1.5;">
+        After payment, you will see a UTR/Ref No in your UPI app. Paste it here.
+      </small>
+
+      <!-- Existing bottom button -->
+      <button
+        type="button"
+        class="btn tz-btn tz-ripple w-100 mt-3"
+        id="tzContinueBtn">
+        Continue & Upload Screenshot
+      </button>
+
+    </div>
+  </div>
+
+  <!-- ✅ SINGLE CLEAN SCRIPT -->
+  <script>
+  (() => {
+    const paymentBtn = document.getElementById("tzPaymentBtn");
+    const modal = document.getElementById("tzPaymentModal");
+    const closeBtn = document.getElementById("tzPaymentClose");
+
+    const continueBtn = document.getElementById("tzContinueBtn");
+    const continueBtnTop = document.getElementById("tzContinueBtnTop");
+    const utrInput = document.getElementById("tzUtr");
+
+    const nameInput = document.getElementById("tzName");
+    const phoneInput = document.getElementById("tzPhone");
+    const ageInput = document.getElementById("tzAge");
+    const titleEl = document.getElementById("enrollTitle");
+
+    // Plan from URL
+    const params = new URLSearchParams(window.location.search);
+    const planParam = (params.get("plan") || "beginner").toLowerCase();
+
+    const planMap = {
+      beginner: "Beginner",
+      intermediate: "Intermediate",
+      advanced: "Advanced",
+      online: "Online Coaching"
+    };
+    const planTitle = planMap[planParam] || "Enrollment";
+    if (titleEl) titleEl.textContent = `${planTitle} Enrollment`;
+
+    if (!paymentBtn || !modal || !closeBtn || !continueBtn || !continueBtnTop) return;
+
+    function openModal() {
+      if (!nameInput.value.trim() || !phoneInput.value.trim() || !ageInput.value.trim()) {
+        alert("Please fill Name, Phone, and Age before proceeding to payment.");
+        return;
+      }
+      modal.classList.add("show");
+      modal.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+      setTimeout(() => utrInput?.focus(), 50);
+    }
+
+    function closeModal() {
+      modal.classList.remove("show");
+      modal.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+    }
+
+    // Open payment modal
+    paymentBtn.addEventListener("click", openModal);
+
+    // Close actions
+    closeBtn.addEventListener("click", closeModal);
+    modal.addEventListener("click", (e) => { if (e.target === modal) closeModal(); });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && modal.classList.contains("show")) closeModal();
+    });
+
+    // ✅ Shared continue handler (both buttons use same)
+    function handleContinue() {
+      const utr = (utrInput.value || "").trim();
+      if (utr.length < 10) {
+        alert("Please enter a valid UTR / Reference Number after payment.");
+        utrInput.focus();
+        return;
+      }
+
+      const redirectUrl =
+        `confirm.html?plan=${encodeURIComponent(planTitle)}` +
+        `&name=${encodeURIComponent(nameInput.value.trim())}` +
+        `&phone=${encodeURIComponent(phoneInput.value.trim())}` +
+        `&age=${encodeURIComponent(ageInput.value.trim())}` +
+        `&utr=${encodeURIComponent(utr)}`;
+
+      window.location.href = redirectUrl;
+    }
+
+    continueBtn.addEventListener("click", handleContinue);
+    continueBtnTop.addEventListener("click", handleContinue);
+
+  })();
+
+  </script>
+  <script>
+  // Detect plan from URL
+  const params = new URLSearchParams(window.location.search);
+  const plan = params.get("plan");
+
+  const titleMap = {
+    beginner: "Beginner Enrollment",
+    intermediate: "Intermediate Enrollment",
+    advanced: "Advanced Enrollment",
+    online: "Online Coaching Enrollment"
+  };
+
+  const titleEl = document.getElementById("planTitle");
+  if (plan && titleMap[plan] && titleEl) {
+    titleEl.textContent = titleMap[plan];
+  }
+</script>
+
+
+</body>
+</html>
